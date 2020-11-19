@@ -1,0 +1,131 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body style="padding-top:20px">
+    <div class="col-md-10 col-md-offset-1">
+        <div class="well">
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="success">
+                        <th colspan="2">
+                            Existing User Login
+                            <a class="btn btn-success pull-right" href="RegisterEmp.html">Register</a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            User Name
+                        </td>
+                        <td>
+                            <input type="text" id="txtemail" placeholder="Enter Email" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Password
+                        </td>
+                        <td>
+                            <input type="password" id="txtpwd" placeholder="Enter Password" />
+                        </td>
+                    </tr>
+
+                    <tr class="success">
+                        <td colspan="2">
+                            <input type="button" id="btnLogin" value="Login" class="btn btn-success" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="success">
+                        <th colspan="2">
+                            Social Login
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="success">
+                        <td colspan="2">
+                            <input type="button" id="btnGoogleLogin" value="Login with Google" class="btn btn-success" />
+                        </td>
+                    </tr>
+                    <tr class="success">
+                        <td colspan="2">
+                            <input type="button" id="btnFBLogin" value="Login with facebook" class="btn btn-success" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div id="divError" class="alert alert-danger collapse">
+                <a id="linkClose" href="#" class="close">&times;</a>
+                <div id="divErrorText"></div>
+
+            </div>
+        </div>
+
+        <script src="Scripts/jquery-3.3.1.min.js"></script>
+        <script src="Scripts/bootstrap.min.js"></script>
+        <script src="Scripts/GoogleAuthentication.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+                getAccessToken();
+
+                $('#btnGoogleLogin').click(function () {
+                    window.location.href = "/api/Account/ExternalLogin?provider=Google&response_type=token&client_id=self&redirect_uri=http%3A%2F%2Flocalhost%3A53722%2FLogin.html&state=_vlLBKiCXsFXHo7xId0ep8j9jOk11KKvSGkw7A0Q_Z81";
+                });
+
+                $('#btnFBLogin').click(function () {
+                    window.location.href = "/api/Account/ExternalLogin?provider=Facebook&response_type=token&client_id=self&redirect_uri=http%3A%2F%2Flocalhost%3A53722%2FLogin.html&state=_vlLBKiCXsFXHo7xId0ep8j9jOk11KKvSGkw7A0Q_Z81";
+                });
+
+
+                $('#linkClose').click(function () {
+                    $('#divError').hide('fade');
+                });
+
+                // debugger;
+                $('#btnLogin').click(function () {
+                    //debugger;
+                    $.ajax({
+                        url: '/token',
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: {
+                            username: $('#txtemail').val(),
+                            password: $('#txtpwd').val(),
+                            grant_type: 'password'
+                        },
+                        success: function (response) {
+                            localStorage.setItem("accessToken", response.access_token); //sessionStorage.setItem("accessToken", response.access_token);
+                            localStorage.setItem("userName", response.userName);
+                            window.location.href = "Data.html";
+                        },
+                        error: function (jqXHR) {
+                            $('#divErrorText').text(jqXHR.responseText);
+                            $('#divError').show('fade');
+                        }
+                    });
+                    // debugger;
+
+                })
+            });
+
+        </script>
+
+
+        
+
+</body>
+</html>
