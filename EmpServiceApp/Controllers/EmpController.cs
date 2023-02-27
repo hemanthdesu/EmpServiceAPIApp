@@ -23,7 +23,7 @@ namespace EmpServiceApp.Controllers
         //[Route("api/Emp/{EmailID}")]
         public IEnumerable<Employee> GetLoademp() //string EmailID -parameter value
         {
-            string connectionstr = "server=LENWSSDST91.jcp.com,1433;database=dias;Trusted_Connection=true;Connect Timeout=1200; User ID = dias_user; Password = Tl1x5jYILtDdVzg";
+            string connectionstr = "server=XXXXX,1433;database=dias;Trusted_Connection=true;Connect Timeout=1200; User ID = dias_user; Password = XXXXXX";
             SqlDataAdapter adapter;
             DataSet ds = new DataSet();
             var EmpList=new List<Employee>();
